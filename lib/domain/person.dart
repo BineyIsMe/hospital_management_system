@@ -11,5 +11,10 @@ abstract class  Person  {
       _name = name,
       _address = address,
       _age = age;
-      
+      String get getId=>_id;
+      String get getName=> _name;
+      String get getAddress=> _address;
+      int get getAge=>_age;
+      set setAge(int int)=>_age=int;
+
 }

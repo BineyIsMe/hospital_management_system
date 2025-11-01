@@ -14,6 +14,8 @@ class Staff extends Person {
     required super.name,
     required super.address,
     required super.age,
+    required super.gender,
+    required super.phoneNumber,
     this.position = Position.other,
     this.salary = 0,
     this.bonus = 0,

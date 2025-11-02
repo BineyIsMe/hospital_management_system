@@ -119,7 +119,49 @@ void addNewRoom(Room room) {
       print("appointment not exists yet");
     }
   }
-   List<Room> checkAvailable() =>
+   List<Room> checkRoomAvailable() =>
     rooms.where((room) => room.status == Status.noActive).toList();
+
+  Patient findPatientById(String id){
+    final findPatient = patients.firstWhere((a)=>a.getId==id);
+    return findPatient;
+  }
+    Patient findPatientByName(String name){
+    final findPatient = patients.firstWhere((a)=>a.getName==name);
+    return findPatient;
+  }
+  List<Appointment> getUpcomingAppointments()=>
+  appointments.where((appointment)=> appointment.status == AppointmentStatus.inProgress).toList();
+    List<Appointment> getPastAppointments()=>
+  appointments.where((appointment)=> appointment.status == AppointmentStatus.finished).toList();
+  bool isDoctorAvailable(Doctor doctor, DateTime date){
+    final isbusy = appointments.any((a)=>(a.doctor.getId== doctor.getId && a.getdate == date));
+    return !isbusy;
+  }
+
+   Map<String, dynamic> toJson() => {
+        'doctors': doctors.map((d) => d.toJson()).toList(),
+        'appointments': appointments.map((a) => a.toJson()).toList(),
+        'patients': patients.map((p) => p.toJson()).toList(),
+        'staffs': staffs.map((s) => s.toJson()).toList(),
+        'rooms': rooms.map((r) => r.toJson()).toList(),
+        'presciptions': presciptions.map((p) => p.toJson()).toList(),
+      };
+
+  factory Hospital.fromJson(Map<String, dynamic> json) => Hospital(
+        doctors: (json['doctors'] as List)
+            .map((d) => Doctor.fromJson(d))
+            .toList(),
+        appointments: (json['appointments'] as List)
+            .map((a) => Appointment.fromJson(a))
+            .toList(),
+        patients:
+            (json['patients'] as List).map((p) => Patient.fromJson(p)).toList(),
+        staffs: (json['staffs'] as List).map((s) => Staff.fromJson(s)).toList(),
+        rooms: (json['rooms'] as List).map((r) => Room.fromJson(r)).toList(),
+        presciptions: (json['presciptions'] as List)
+            .map((p) => Presciption.fromJson(p))
+            .toList(),
+      );
 
 }

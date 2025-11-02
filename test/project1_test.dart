@@ -95,7 +95,7 @@ void main() {
 
     test('Check available rooms', () {
       hospital.addNewRoom(room1);
-      final available = hospital.checkAvailable();
+      final available = hospital.checkRoomAvailable();
       expect(available.length, 1);
       expect(available.first.status, Status.noActive);
     });

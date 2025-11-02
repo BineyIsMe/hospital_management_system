@@ -32,6 +32,30 @@ class Room {
         'staffs: ${staffs.map((s) => s.getName).join(", ")})';
   }
   void changeStatus(Status newStatus)=> status=newStatus;
+   Map<String, dynamic> toJson() => {
+        'id': _id,
+        'roomName': roomName,
+        'typeRoom': _typeRoom.name,
+        'status': status.name,
+        'staffs': staffs.map((s) => s.toJson()).toList(),
+        'patient': patient?.toJson(),
+      };
+
+  factory Room.fromJson(Map<String, dynamic> json) => Room(
+        roomName: json['roomName'],
+        typeRoom: Roomtype.values.firstWhere(
+          (e) => e.name == json['typeRoom'],
+          orElse: () => Roomtype.general,
+        ),
+        status: Status.values.firstWhere(
+          (e) => e.name == json['status'],
+          orElse: () => Status.noActive,
+        ),
+        staffs:
+            (json['staffs'] as List).map((s) => Staff.fromJson(s)).toList(),
+        patient:
+            json['patient'] != null ? Patient.fromJson(json['patient']) : null,
+      );
 
 
 }

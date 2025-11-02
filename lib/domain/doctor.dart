@@ -22,4 +22,24 @@ class Doctor extends Staff {
         'position: $position, salary: $salary, bonus: $bonus, '
         'status: $status, Specialization: $specialization)';
   }
+   Map<String, dynamic> toJson() => {
+        'name': getName,
+        'address': getAddress,
+        'age': getAge,
+        'phoneNumber': getPhoneNumber,
+        'gender': gender,
+        'specialization': specialization.name,
+      };
+
+  factory Doctor.fromJson(Map<String, dynamic> json) => Doctor(
+        name: json['name'],
+        address: json['address'],
+        age: json['age'],
+        phoneNumber: json['phoneNumber'],
+        gender: json['gender'],
+        specialization: Specialization.values.firstWhere(
+          (e) => e.name == json['specialization'],
+          orElse: () => Specialization.other,
+        ),
+      );
 }

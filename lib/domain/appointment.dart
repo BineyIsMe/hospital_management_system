@@ -28,4 +28,22 @@ set setdate(DateTime date)=> _date=date;
 void changeStatus(Status newStatus) {
   status = AppointmentStatus.values[newStatus.index];
 }
+  Map<String, dynamic> toJson() => {
+        'id': _id,
+        'date': _date.toIso8601String(),
+        'patient': patient.toJson(),
+        'doctor': doctor.toJson(),
+        'status': status.name,
+      };
+
+  factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
+        date: DateTime.parse(json['date']),
+        patient: Patient.fromJson(json['patient']),
+        doctor: Doctor.fromJson(json['doctor']),
+        status: AppointmentStatus.values.firstWhere(
+          (e) => e.name == json['status'],
+          orElse: () => AppointmentStatus.notYet,
+        ),
+      );
+      
 }

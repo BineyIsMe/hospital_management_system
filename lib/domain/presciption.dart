@@ -39,5 +39,24 @@ class Presciption {
         'staff: ${staff.getName }, diagnosis: ${_diagnosis.join(", ")}, '
         'totalAmount: $_totalAmount, medicalDescription: $_medicalDescription),DateOfPrescription: $dateOfPrescription';
   }
+   Map<String, dynamic> toJson() => {
+        'id': _id,
+        'diagnosis': _diagnosis,
+        'totalAmount': _totalAmount,
+        'medicalDescription': _medicalDescription,
+        'dateOfPrescription': dateOfPrescription.toIso8601String(),
+        'staff': staff.toJson(),
+        'patient': patient.toJson(),
+        'doctor': doctor.toJson(),
+      };
+
+  factory Presciption.fromJson(Map<String, dynamic> json) => Presciption(
+        diagnosis: List<String>.from(json['diagnosis']),
+        totalAmount: json['totalAmount'],
+        medicalDescription: json['medicalDescription'],
+        staff: Staff.fromJson(json['staff']),
+        patient: Patient.fromJson(json['patient']),
+        doctor: Doctor.fromJson(json['doctor']),
+      );
 
 }

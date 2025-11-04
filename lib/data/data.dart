@@ -5,14 +5,14 @@ import 'package:project1/domain/hospital.dart';
 
 
 
-void saveHospitalFile(Hospital hospital) async {
-  final file = File('hospital.json');
+Future<void> saveHospitalFile(Hospital hospital, String filePath) async {
+  final file = File(filePath);
   await file.writeAsString(jsonEncode(hospital.toJson()));
   print('Hospital data saved.');
 }
 
-Future<Hospital> loadHospitalFile() async {
-  final file = File('hospital.json');
+Future<Hospital> loadHospitalFile(String filePath) async {
+  final file = File(filePath);
   final content = await file.readAsString();
   return Hospital.fromJson(jsonDecode(content));
 }

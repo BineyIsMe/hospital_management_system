@@ -1,0 +1,60 @@
+{
+    "doctors": [
+        {
+            "name": "Dr. Smith",
+            "address": "Phnom Penh",
+            "age": 45,
+            "phoneNumber": "012345678",
+            "gender": "Male",
+            "specialization": "cardiology"
+        }
+    ],
+    "appointments": [
+        {
+            "id": "5ccca7ee-3e67-4fee-acdd-cf6664eaa25b",
+            "date": "2025-12-12T00:00:00.000",
+            "patient": {
+                "name": "John Doe",
+                "address": "Siem Reap",
+                "age": 30,
+                "phoneNumber": "099887766",
+                "gender": "Male"
+            },
+            "doctor": {
+                "name": "Dr. Smith",
+                "address": "Phnom Penh",
+                "age": 45,
+                "phoneNumber": "012345678",
+                "gender": "Male",
+                "specialization": "cardiology"
+            },
+            "status": "notYet"
+        }
+    ],
+    "patients": [
+        {
+            "name": "John Doe",
+            "address": "Siem Reap",
+            "age": 30,
+            "phoneNumber": "099887766",
+            "gender": "Male"
+        },
+        {
+            "name": "Alice Brown",
+            "address": "Battambang",
+            "age": 25,
+            "phoneNumber": "088998877",
+            "gender": "Female"
+        },
+        {
+            "name": "joy",
+            "address": "pts",
+            "age": 14,
+            "phoneNumber": "0105834",
+            "gender": "male"
+        }
+    ],
+    "staffs": [],
+    "rooms": [],
+    "presciptions": []
+}

@@ -53,7 +53,7 @@ void main() {
       prescription1 = Presciption(
           patient: patient1,
           doctor: doctor1,
-          diagnosis: ['HIV'],
+          diagnosis: ['Paracetamol'],
           totalAmount: 300.0,
           staff: staff1);
 

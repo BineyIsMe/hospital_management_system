@@ -8,44 +8,7 @@ import 'package:project1/domain/staff.dart';
 import 'package:project1/domain/room.dart';
 import 'package:project1/domain/presciption.dart';
 
-void main() {
-  // --- Mock data setup ---
-  final doctor1 = Doctor(
-    name: 'Dr. NHA',
-    address: 'Phnom Penh',
-    age: 45,
-    phoneNumber: '012345678',
-    gender: 'Male',
-    specialization: Specialization.cardiology,
-  );
 
-  final patient1 = Patient(
-    name: 'PU NAK',
-    address: 'Siem Reap',
-    age: 30,
-    phoneNumber: '099887766',
-    gender: 'Male',
-  );
-
-  final patient2 = Patient(
-    name: 'Bopha',
-    address: 'Battambang',
-    age: 25,
-    phoneNumber: '088998877',
-    gender: 'Female',
-  );
-
-  final hospital = Hospital(
-    doctors: [doctor1],
-    patients: [patient1, patient2],
-    staffs: [],
-    rooms: [],
-    appointments: [],
-    presciptions: [],
-  );
-
-  runHospitalConsole(hospital);
-}
 
 Future<void> runHospitalConsole(Hospital hospital) async {
   final filePath = './lib/data/hospital.json';
@@ -57,17 +20,17 @@ Future<void> runHospitalConsole(Hospital hospital) async {
     print('4. Change appointment date');
     print('5. Find appointment by doctor');
     print('6. Find appointment by patient');
-    print('7. Find patient by ID');
-    print('8. Find patient by name');
-    print('9. View upcoming appointments');
-    print('10. View past appointments');
-    print('11. Check doctor availability');
+    // print('7. Find patient by ID');
+    print('7. Find patient by name');
+    print('8. View upcoming appointments');
+    print('9. View past appointments');
+    print('10. Check doctor availability');
     print('--- Registration ---');
-    print('12. Register new patient');
-    print('13. Register new doctor');
-    print('14. Register new staff');
-    print('15. Add new room');
-    print('16. Add prescription');
+    print('11. Register new patient');
+    print('12. Register new doctor');
+    print('13. Register new staff');
+    print('14. Add new room');
+    print('15. Add prescription');
     print('0. Exit');
     stdout.write('Enter your choice: ');
     final choice = stdin.readLineSync();
@@ -91,34 +54,34 @@ Future<void> runHospitalConsole(Hospital hospital) async {
       case '6':
         findByPatient(hospital);
         break;
+      // case '7':
+      //   findPatientByIdUI(hospital);
+      //   break;
       case '7':
-        findPatientByIdUI(hospital);
-        break;
-      case '8':
         findPatientByNameUI(hospital);
         break;
-      case '9':
+      case '8':
         showUpcomingAppointments(hospital);
         break;
-      case '10':
+      case '9':
         showPastAppointments(hospital);
         break;
-      case '11':
+      case '10':
         checkDoctorAvailabilityUI(hospital);
         break;
-      case '12':
+      case '11':
         registerPatientUI(hospital);
         break;
-      case '13':
+      case '12':
         registerDoctorUI(hospital);
         break;
-      case '14':
+      case '13':
         registerStaffUI(hospital);
         break;
-      case '15':
+      case '14':
         addRoomUI(hospital);
         break;
-      case '16':
+      case '15':
         addPrescriptionUI(hospital);
         break;
       case '0':
@@ -193,7 +156,7 @@ void addAppointment(Hospital hospital) {
       final diff = existing.getdate.difference(date).inMinutes.abs();
       if (diff < 60 &&
           (existing.doctor == doctor || existing.patient == patient)) {
-        print(' Error: Doctor or patient already has an appointment within 1 hour.');
+        print(' Cannot create appointment .Reason doctor or patient is busy');
         return;
       }
     }
@@ -231,50 +194,47 @@ void cancelAppointment(Hospital hospital) {
 }
 
 void changeAppointment(Hospital hospital) {
-  print('\n--- Change Appointment Date ---');
+  print('\n--- Change Appointment Date & Time ---');
+
   if (hospital.appointments.isEmpty) {
     print('No appointments to modify.');
     return;
   }
 
   showAppointments(hospital);
+
   stdout.write('Enter appointment ID to change: ');
   final id = stdin.readLineSync();
 
-  final oldAppointments = hospital.appointments
-      .where((a) => a.getId == id)
-      .toList();
+  final oldAppointments = hospital.appointments.where((a) => a.getId == id).toList();
+
   if (oldAppointments.isEmpty) {
-    print(' Appointment not found.');
+    print('Appointment not found.');
     return;
   }
-
   final oldAppointment = oldAppointments.first;
 
-  stdout.write('Enter new date (YYYY-MM-DD): ');
+  stdout.write('Enter new date and time (YYYY-MM-DD HH:MM): ');
   final newDateInput = stdin.readLineSync();
-
-  if (newDateInput == null || newDateInput.isEmpty) {
-    print(' Invalid date.');
+  if (newDateInput == null || newDateInput.trim().isEmpty) {
+    print('Invalid date or time.');
     return;
   }
-
   try {
-    final newDate = DateTime.parse(newDateInput);
+    final newDate = DateTime.parse(newDateInput.replaceFirst(' ', 'T'));
     final newAppointment = Appointment(
       patient: oldAppointment.patient,
       doctor: oldAppointment.doctor,
       date: newDate,
       status: oldAppointment.status,
     );
-
     hospital.changeAppointment(
       oldAppointment: oldAppointment,
       newAppointment: newAppointment,
     );
-    print(' Appointment date changed.');
+    print('Appointment updated successfully.');
   } catch (e) {
-    print(' Invalid date format. Use YYYY-MM-DD.');
+    print('Invalid date/time format. Please use YYYY-MM-DD HH:MM');
   }
 }
 
@@ -616,29 +576,27 @@ void findPatientByNameUI(Hospital hospital) {
 }
 
 void showUpcomingAppointments(Hospital hospital) {
+  hospital.updateAppointmentStatuses(); 
   final upcoming = hospital.getUpcomingAppointments();
   if (upcoming.isEmpty) {
     print('No upcoming appointments.');
   } else {
     print('Upcoming Appointments:');
     for (var a in upcoming) {
-      print(
-        '${a.getId} | ${a.getdate} | ${a.patient.getName} => ${a.doctor.getName}',
-      );
+      print('${a.getId} | ${a.getdate} | ${a.patient.getName} => ${a.doctor.getName}');
     }
   }
 }
 
 void showPastAppointments(Hospital hospital) {
+  hospital.updateAppointmentStatuses(); 
   final past = hospital.getPastAppointments();
   if (past.isEmpty) {
     print('No past appointments.');
   } else {
     print('Past Appointments:');
     for (var a in past) {
-      print(
-        '${a.getId} | ${a.getdate} | ${a.patient.getName} → ${a.doctor.getName}',
-      );
+      print('${a.getId} | ${a.getdate} | ${a.patient.getName} => ${a.doctor.getName}');
     }
   }
 }
@@ -676,31 +634,37 @@ void checkDoctorAvailabilityUI(Hospital hospital) {
 
 void findByDoctor(Hospital hospital) {
   print('\n--- Find Appointments by Doctor ---');
+
   if (hospital.doctors.isEmpty) {
     print('No doctors available.');
     return;
   }
-
   for (var i = 0; i < hospital.doctors.length; i++) {
-    print('${i + 1}. ${hospital.doctors[i].getName}');
+    final doctor = hospital.doctors[i];
+    print('${i + 1}. ${doctor.getName}');
   }
-
-  stdout.write('Choose doctor number: ');
-  final choice = int.tryParse(stdin.readLineSync() ?? '') ?? 0;
-  if (choice < 1 || choice > hospital.doctors.length) {
+  stdout.write('\nChoose doctor number: ');
+  final input = stdin.readLineSync();
+  if (input == null || input.isEmpty) {
+    print('No input provided.');
+    return;
+  }
+  final choice = int.tryParse(input);
+  if (choice == null || choice < 1 || choice > hospital.doctors.length) {
     print('Invalid choice.');
     return;
   }
-
   final doctor = hospital.doctors[choice - 1];
   final appointments = hospital.findAppointmentByDoctor(doctor);
-
+  print('\n--- Appointments for ${doctor.getName} ---');
   if (appointments.isEmpty) {
-    print('No appointments found for ${doctor.getName}.');
+    print('No appointments found.');
   } else {
-    print('Appointments for ${doctor.getName}:');
     for (var a in appointments) {
-      print('${a.getId} | ${a.getdate} | Patient: ${a.patient.getName}');
+      print('• ID: ${a.getId}');
+      print('  Date: ${a.getdate}');
+      print('  Patient: ${a.patient.getName}');
+      print('');
     }
   }
 }

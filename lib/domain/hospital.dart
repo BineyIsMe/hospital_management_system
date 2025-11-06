@@ -85,15 +85,17 @@ void addAppointment(Appointment appointment) {
     }
   }
 
-  List<Appointment> findAppointmentByDoctor(Doctor doctor) {
-    final List<Appointment> doctorAppointments = [];
-    for (var a in appointments) {
-      if (a.doctor.getId == doctor.getId) {
-        doctorAppointments.add(a);
-      }
-    }
-    return doctorAppointments;
+List<Appointment> findAppointmentByDoctor(Doctor doctor) {
+  print('DEBUG: Looking for doctor ID: ${doctor.getId}');
+  for (var a in appointments) {
+    print('DEBUG: Checking appointment ${a.getId} with doctor ID ${a.doctor.getId}');
   }
+
+  return appointments
+      .where((a) => a.doctor.getId == doctor.getId)
+      .toList();
+}
+
 
   List<Appointment> findAppointmentByPatient(Patient patient) {
     final List<Appointment> patientAppointments = [];
@@ -109,16 +111,24 @@ void addAppointment(Appointment appointment) {
     required Appointment oldAppointment,
     required Appointment newAppointment,
   }) {
-    final exists = appointments.any((a) => a.getId == oldAppointment.getId);
-    if (exists) {
-      appointments.removeWhere((a) => a.getId == oldAppointment.getId);
-      appointments.add(newAppointment);
-      print("Update succesfully");
-    } else {
-      print("appointment not exists yet");
+    final index = appointments.indexWhere((a) => a.getId == oldAppointment.getId);
+    if (index == -1) {
+      print('Old appointment not found.');
+      return;
     }
+    for (var existing in appointments) {
+      if (existing.getId == oldAppointment.getId) continue;
+      final difference = existing.getdate.difference(newAppointment.getdate).inMinutes.abs();
+      if (difference < 60 &&
+          (existing.doctor.getId == newAppointment.doctor.getId ||
+              existing.patient.getId == newAppointment.patient.getId)) {
+        print('Cannot update appointment: doctor or patient is busy around that time.');
+        return;
+      }
+    }
+    appointments[index] = newAppointment;
+    print('Update succesfully');
   }
-
   List<Room> checkRoomAvailable() =>
       rooms.where((room) => room.status == Status.noActive).toList();
   Patient findPatientById(String id) {
@@ -139,12 +149,29 @@ void addAppointment(Appointment appointment) {
   List<Appointment> getPastAppointments() => appointments
       .where((appointment) => appointment.status == AppointmentStatus.finished)
       .toList();
-  bool isDoctorAvailable(Doctor doctor, DateTime date) {
-    final isbusy = appointments.any(
-      (a) => (a.doctor.getId == doctor.getId && a.getdate == date),
-    );
-    return !isbusy;
+      void updateAppointmentStatuses() {
+  final now = DateTime.now();
+  for (var a in appointments) {
+    if (a.getdate.isBefore(now)) {
+      a.status = AppointmentStatus.finished;
+    } else {
+      a.status = AppointmentStatus.inProgress;
+    }
   }
+}
+bool isDoctorAvailable(Doctor doctor, DateTime date) {
+  for (var appointment in appointments) {
+    if (appointment.doctor.getId == doctor.getId) {
+      final diffMinutes = appointment.getdate.difference(date).inMinutes.abs();
+
+      if (diffMinutes < 60) {
+        return false;
+      }
+    }
+  }
+  return true; 
+}
+
 
   Map<String, dynamic> toJson() => {
     'doctors': doctors.map((d) => d.toJson()).toList(),

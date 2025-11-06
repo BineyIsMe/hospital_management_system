@@ -155,7 +155,7 @@ void addAppointment(Hospital hospital) {
   print('\n--- Add New Appointment ---');
   if (hospital.patients.isEmpty || hospital.doctors.isEmpty) {
     print('Need at least one doctor and one patient.');
-    return;
+    return;  
   }
 
   print('\nAvailable Patients:');

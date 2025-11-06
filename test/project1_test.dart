@@ -19,22 +19,22 @@ void main() {
 
     setUp(() {
       patient1 = Patient(
-          name: 'John Doe',
+          name: 'PU NAK',
           age: 30,
           gender: 'M',
-          address: '123 Street',
+          address: '82 Street',
           phoneNumber: "123");
       doctor1 = Doctor(
-          name: 'Dr. Smith',
+          name: 'Dr. NHA',
           age: 45,
           gender: 'M',
-          address: '456 Street',
+          address: '70 Street',
           phoneNumber: "321");
       staff1 = Staff(
-          name: 'Nurse Jane',
+          name: 'Nurse zju',
           age: 28,
           gender: 'F',
-          address: '789 Street',
+          address: '20 Street',
           position: Position.nurse,
           salary: 2000,
           bonus: 100,
@@ -53,7 +53,7 @@ void main() {
       prescription1 = Presciption(
           patient: patient1,
           doctor: doctor1,
-          diagnosis: ['Paracetamol'],
+          diagnosis: ['HIV'],
           totalAmount: 300.0,
           staff: staff1);
 
@@ -70,19 +70,19 @@ void main() {
     test('Register patient', () {
       hospital.registerPatient(patient1);
       expect(hospital.patients.length, 1);
-      expect(hospital.patients.first.getName, 'John Doe');
+      expect(hospital.patients.first.getName, 'PU NAK');
     });
 
     test('Register doctor', () {
       hospital.registerDoctor(doctor1);
       expect(hospital.doctors.length, 1);
-      expect(hospital.doctors.first.getName, 'Dr. Smith');
+      expect(hospital.doctors.first.getName, 'Dr. NHA');
     });
 
     test('Register staff', () {
       hospital.registerStaff(staff1);
       expect(hospital.staffs.length, 1);
-      expect(hospital.staffs.first.getName, 'Nurse Jane');
+      expect(hospital.staffs.first.getName, 'Nurse zju');
     });
 
     test('Add room', () {
@@ -94,7 +94,7 @@ void main() {
     test('Add appointment', () {
       hospital.addAppointment(appointment1);
       expect(hospital.appointments.length, 1);
-      expect(hospital.appointments.first.patient.getName, 'John Doe');
+      expect(hospital.appointments.first.patient.getName, 'PU NAK');
     });
 
     test('Cancel appointment', () {
@@ -107,14 +107,14 @@ void main() {
       hospital.addAppointment(appointment1);
       final result = hospital.findAppointmentByDoctor(doctor1);
       expect(result.length, 1);
-      expect(result.first.doctor.getName, 'Dr. Smith');
+      expect(result.first.doctor.getName, 'Dr. NHA');
     });
 
     test('Find appointment by patient', () {
       hospital.addAppointment(appointment1);
       final result = hospital.findAppointmentByPatient(patient1);
       expect(result.length, 1);
-      expect(result.first.patient.getName, 'John Doe');
+      expect(result.first.patient.getName, 'PU NAK');
     });
 
     test('Change appointment', () {
@@ -149,12 +149,12 @@ void main() {
     test('Find patient by ID', () {
       hospital.registerPatient(patient1);
       final result = hospital.findPatientById(patient1.getId);
-      expect(result.getName, 'John Doe');
+      expect(result.getName, 'PU NAK');
     });
 
     test('Find patient by name', () {
       hospital.registerPatient(patient1);
-      final result = hospital.findPatientByName('John Doe');
+      final result = hospital.findPatientByName('PU NAK');
       expect(result.getId, patient1.getId);
     });
 

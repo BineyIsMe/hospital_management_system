@@ -11,10 +11,8 @@ import 'package:project1/ui/appointment_console.dart';
 
 Future<void> main() async {
   final filePath = './lib/data/hospital.json';
-
-  // --- Mock data setup ---
   final doctor1 = Doctor(
-    name: 'Dr. Smith',
+    name: 'Dr. NHA',
     address: 'Phnom Penh',
     age: 45,
     phoneNumber: '012345678',
@@ -23,7 +21,7 @@ Future<void> main() async {
   );
 
   final patient1 = Patient(
-    name: 'John Doe',
+    name: 'PU NAK',
     address: 'Siem Reap',
     age: 30,
     phoneNumber: '099887766',
@@ -31,7 +29,7 @@ Future<void> main() async {
   );
 
   final patient2 = Patient(
-    name: 'Alice Brown',
+    name: 'Bopha',
     address: 'Battambang',
     age: 25,
     phoneNumber: '088998877',

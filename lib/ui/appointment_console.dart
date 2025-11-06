@@ -11,7 +11,7 @@ import 'package:project1/domain/presciption.dart';
 void main() {
   // --- Mock data setup ---
   final doctor1 = Doctor(
-    name: 'Dr. Smith',
+    name: 'Dr. NHA',
     address: 'Phnom Penh',
     age: 45,
     phoneNumber: '012345678',
@@ -20,7 +20,7 @@ void main() {
   );
 
   final patient1 = Patient(
-    name: 'John Doe',
+    name: 'PU NAK',
     address: 'Siem Reap',
     age: 30,
     phoneNumber: '099887766',
@@ -28,7 +28,7 @@ void main() {
   );
 
   final patient2 = Patient(
-    name: 'Alice Brown',
+    name: 'Bopha',
     address: 'Battambang',
     age: 25,
     phoneNumber: '088998877',

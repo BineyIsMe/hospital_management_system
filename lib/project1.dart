@@ -10,7 +10,7 @@ import 'package:project1/domain/hospital.dart';
 import 'package:project1/ui/appointment_console.dart';
 
 Future<void> main() async {
-  final filePath = 'hospital.json';
+  final filePath = './lib/data/hospital.json';
 
   // --- Mock data setup ---
   final doctor1 = Doctor(

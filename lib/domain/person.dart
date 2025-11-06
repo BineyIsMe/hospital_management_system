@@ -25,4 +25,7 @@ abstract class Person {
   int get getAge => _age;
   String get getPhoneNumber => _phoneNumber;
   set setAge(int int) => _age = int;
+
+  @override
+  String toString();
 }

@@ -22,7 +22,8 @@ class Doctor extends Staff {
         'position: $position, salary: $salary, bonus: $bonus, '
         'status: $status, Specialization: $specialization)';
   }
-   Map<String, dynamic> toJson() => {
+   @override
+     Map<String, dynamic> toJson() => {
         'name': getName,
         'address': getAddress,
         'age': getAge,

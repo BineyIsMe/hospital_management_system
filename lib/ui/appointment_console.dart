@@ -48,9 +48,9 @@ void main() {
 }
 
 Future<void> runHospitalConsole(Hospital hospital) async {
-  final filePath = 'hospital.json';
+  final filePath = './lib/data/hospital.json';
   while (true) {
-    print('\n===== 🏥 Hospital Management System =====');
+    print('\n=====  Hospital Management System =====');
     print('1. Show all appointments');
     print('2. Add new appointment');
     print('3. Cancel appointment');
@@ -154,44 +154,58 @@ void showAppointments(Hospital hospital) {
 void addAppointment(Hospital hospital) {
   print('\n--- Add New Appointment ---');
   if (hospital.patients.isEmpty || hospital.doctors.isEmpty) {
-    print('Need at least one doctor and one patient.');
+    print(' Need at least one doctor and one patient before adding an appointment.');
     return;
   }
 
+  // --- Select Patient ---
   print('\nAvailable Patients:');
   for (var i = 0; i < hospital.patients.length; i++) {
     print('${i + 1}. ${hospital.patients[i].getName}');
   }
+
   stdout.write('Choose patient number: ');
-  final pIndex = int.tryParse(stdin.readLineSync() ?? '') ?? 0;
-  if (pIndex < 1 || pIndex > hospital.patients.length) return;
+  final pIndex = int.tryParse(stdin.readLineSync() ?? '');
+  if (pIndex == null || pIndex < 1 || pIndex > hospital.patients.length) {
+    print(' Invalid patient selection.');
+    return;
+  }
   final patient = hospital.patients[pIndex - 1];
 
   print('\nAvailable Doctors:');
   for (var i = 0; i < hospital.doctors.length; i++) {
-    print(
-      '${i + 1}. ${hospital.doctors[i].getName} (${hospital.doctors[i].specialization})',
-    );
+    print('${i + 1}. ${hospital.doctors[i].getName} (${hospital.doctors[i].specialization})');
   }
-  stdout.write('Choose doctor number: ');
-  final dIndex = int.tryParse(stdin.readLineSync() ?? '') ?? 0;
-  if (dIndex < 1 || dIndex > hospital.doctors.length) return;
-  final doctor = hospital.doctors[dIndex - 1];
 
-  stdout.write('Enter appointment date (YYYY-MM-DD): ');
+  stdout.write('Choose doctor number: ');
+  final dIndex = int.tryParse(stdin.readLineSync() ?? '');
+  if (dIndex == null || dIndex < 1 || dIndex > hospital.doctors.length) {
+    print(' Invalid doctor selection.');
+    return;
+  }
+  final doctor = hospital.doctors[dIndex - 1];
+  stdout.write('Enter appointment date & time (YYYY-MM-DD HH:MM): ');
   final dateInput = stdin.readLineSync();
+
   try {
-    final date = DateTime.parse(dateInput ?? '');
-    if (!hospital.isDoctorAvailable(doctor, date)) {
-      print(' Doctor is not available.');
-      return;
+    final date = DateTime.parse(dateInput!.replaceFirst(' ', 'T'));
+    for (var existing in hospital.appointments) {
+      final diff = existing.getdate.difference(date).inMinutes.abs();
+      if (diff < 60 &&
+          (existing.doctor == doctor || existing.patient == patient)) {
+        print(' Error: Doctor or patient already has an appointment within 1 hour.');
+        return;
+      }
     }
-    hospital.addAppointment(
-      Appointment(date: date, doctor: doctor, patient: patient),
-    );
-    print(' Appointment added.');
+    hospital.addAppointment(Appointment(
+      date: date,
+      doctor: doctor,
+      patient: patient,
+    ));
+
+    print(' Appointment added successfully at ${date.hour}:${date.minute.toString().padLeft(2, '0')} on ${date.toLocal().toIso8601String().split("T")[0]}.');
   } catch (e) {
-    print('Invalid date format.');
+    print(' Invalid date/time format. Please use YYYY-MM-DD HH:MM');
   }
 }
 

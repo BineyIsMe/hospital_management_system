@@ -56,18 +56,20 @@ class Hospital {
     rooms.add(room);
   }
 
-  void addAppointment(Appointment appointment) {
-    for (var element in appointments) {
-      if (element.getdate == appointment.getdate &&
-          element.patient == appointment.patient &&
-          element.doctor == appointment.doctor) {
-        print("Appointment already exists");
-        return;
-      }
+void addAppointment(Appointment appointment) {
+  for (var existing in appointments) {
+    final difference = existing.getdate.difference(appointment.getdate).inMinutes.abs();
+    if (difference < 60 &&
+        (existing.doctor == appointment.doctor ||
+         existing.patient == appointment.patient)) {
+      print("Error: Appointment time conflict! Doctor or patient already has an appointment within 1 hour.");
+      return;
     }
-
-    appointments.add(appointment);
   }
+  appointments.add(appointment);
+  print("Appointment added successfully.");
+}
+
 
   void addPresciption(Presciption presciption) {
     presciptions.add(presciption);

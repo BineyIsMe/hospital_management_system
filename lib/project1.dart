@@ -19,6 +19,14 @@ Future<void> main() async {
     gender: 'Male',
     specialization: Specialization.cardiology,
   );
+  final doctor2 = Doctor(
+    name: 'Dr. OPP',
+    address: 'Phnom Penh',
+    age: 40,
+    phoneNumber: '010345678',
+    gender: 'Male',
+    specialization: Specialization.cardiology,
+  );
 
   final patient1 = Patient(
     name: 'PU NAK',
@@ -43,7 +51,7 @@ Future<void> main() async {
     print(' Hospital data loaded from $filePath');
   } else {
     hospital = Hospital(
-      doctors: [doctor1],
+      doctors: [doctor1,doctor2],
       patients: [patient1, patient2],
       staffs: [],
       rooms: [],

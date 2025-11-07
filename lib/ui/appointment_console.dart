@@ -20,7 +20,6 @@ Future<void> runHospitalConsole(Hospital hospital) async {
     print('4. Change appointment date');
     print('5. Find appointment by doctor');
     print('6. Find appointment by patient');
-    // print('7. Find patient by ID');
     print('7. Find patient by name');
     print('8. View upcoming appointments');
     print('9. View past appointments');
@@ -96,10 +95,7 @@ Future<void> runHospitalConsole(Hospital hospital) async {
   }
 }
 
-//
-// ========================== MAIN UI FUNCTIONS ==========================
-//
-
+//  UI FUNCTION
 void showAppointments(Hospital hospital) {
   print('\n--- All Appointments ---');
   if (hospital.appointments.isEmpty) {
@@ -120,8 +116,6 @@ void addAppointment(Hospital hospital) {
     print('Need at least one doctor and one patient.');
     return;  
   }
-
-  // --- Select Patient ---
   print('\nAvailable Patients:');
   for (var i = 0; i < hospital.patients.length; i++) {
     print('${i + 1}. ${hospital.patients[i].getName}');
@@ -238,9 +232,9 @@ void changeAppointment(Hospital hospital) {
   }
 }
 
-//
-// ========================== REGISTRATION ==========================
-//
+
+//  REGISTRATION 
+
 
 void registerPatientUI(Hospital hospital) {
   print('\n--- Register New Patient ---');

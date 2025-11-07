@@ -21,19 +21,19 @@ void main() {
       patient1 = Patient(
           name: 'PU NAK',
           age: 30,
-          gender: 'M',
+          gender: 'Male',
           address: '82 Street',
           phoneNumber: "123");
       doctor1 = Doctor(
           name: 'Dr. NHA',
           age: 45,
-          gender: 'M',
+          gender: 'Male',
           address: '70 Street',
           phoneNumber: "321");
       staff1 = Staff(
           name: 'Nurse zju',
           age: 28,
-          gender: 'F',
+          gender: 'Female',
           address: '20 Street',
           position: Position.nurse,
           salary: 2000,
